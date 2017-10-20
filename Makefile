@@ -36,8 +36,6 @@ all $(NODEUNIT):
 versioncheck:
 	@echo version is: $(shell cat package.json | json version)
 	[[ `cat package.json | json version` == `grep '^## ' CHANGES.md | head -2 | tail -1 | awk '{print $$2}'` ]]
-	[[ `cat package.json | json version` == `grep '^var VERSION' bin/bunyan | awk -F"'" '{print $$2}'` ]]
-	[[ `cat package.json | json version` == `grep '^var VERSION' lib/bunyan.js | awk -F"'" '{print $$2}'` ]]
 	@echo Version check ok.
 
 .PHONY: cutarelease
@@ -56,9 +54,9 @@ cutarelease: check
 	    read
 	ver=$(shell cat package.json | json version) && \
 	    date=$(shell date -u "+%Y-%m-%d") && \
-	    git tag -a "$$ver" -m "version $$ver ($$date)" && \
+	    git tag -a "$$ver" -m "version $$ver ($$date) beta" && \
 	    git push --tags origin && \
-	    npm publish
+	    npm publish --tag beta
 
 .PHONY: docs
 docs: toc
@@ -100,7 +98,7 @@ test: $(NODEUNIT)
 		$(SUDO) $(NODEUNIT) test/dtrace.test.js)
 	$(NODEUNIT) $(NON_DTRACE_TEST_FILES)
 
-# Test will all node supported versions (presumes install locations I use on
+# Test with all node supported versions (presumes install locations I use on
 # my machine -- "~/opt/node-VER"):
 # Note: 'test4' is last so (if all is well) I end up with a binary
 # dtrace-provider build for my current default node version.

@@ -1,6 +1,6 @@
 {
   "name": "@537/bunyan",
-  "version": "1.8.10",
+  "version": "2.0.2",
   "description": "a JSON logging library for node.js services",
 
   "main": "./lib/bunyan.js",
@@ -26,7 +26,5 @@
 
   "scripts": {
     "test": "make test"
-  },
-  "dependencies": {
   }
 }
